@@ -45,7 +45,8 @@ INSTALLED_APPS = [
     "company.apps.CompanyConfig",
     "branch.apps.BranchConfig",
     "document.apps.DocumentConfig",
-    "positon.apps.PositonConfig"
+    "positon.apps.PositonConfig",
+    "configurar_estacion.apps.ConfigurarEstacionConfig"
 ]
 
 MIDDLEWARE = [

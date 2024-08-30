@@ -9,4 +9,5 @@ urlpatterns=[
     path("contracts/", include("contract.urls")),
     path("incidents/", include("incident.urls")),
     path("employees/", include("employee.urls"), name="employees"),
+    path("configuracion/", include("configurar_estacion.urls"), name="Configuracion"),
 ]
