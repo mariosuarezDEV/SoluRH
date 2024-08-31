@@ -1,8 +1,10 @@
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, HttpResponseRedirect
 
 from django.contrib.auth.decorators import login_required, user_passes_test
 
 # Create your views here.
+
+from .models import incidentModel
 
 # Solo tienen permiso los usuarios en el grupo RH y Gerencia
 def permisos(user):
@@ -31,3 +33,21 @@ def newincidentView(request):
                 'form': NewIncidentForm(),
                 'message': 'Error al registrar el incidente'
             })
+
+@user_passes_test(permisos, login_url='/')
+def marcar_como_revisado(request,incidencia):
+    incident = incidentModel.objects.get(id=incidencia)
+    incident.estado = True
+    incident.save()
+    #Regresar a la pagina anterior
+    url_antes = request.META.get('HTTP_REFERER')
+    return HttpResponseRedirect(url_antes)
+
+@user_passes_test(permisos, login_url='/')
+def marcar_como_pendiente(request,incidencia):
+    incident = incidentModel.objects.get(id=incidencia)
+    incident.estado = False
+    incident.save()
+    #Regresar a la pagina anterior
+    url_antes = request.META.get('HTTP_REFERER')
+    return HttpResponseRedirect(url_antes)

@@ -11,6 +11,8 @@ from .forms import NewEmployeeForm
 
 from company.models import sucursal_model
 from positon.models import positionModel
+from contract.models import contrato_model
+from incident.models import incidentModel
 
 
 # Solo tienen permiso los usuarios en el grupo RH
@@ -50,6 +52,20 @@ def RegisterEmployeeView(request):
 @user_passes_test(is_rh, login_url='/')
 def EmployeeDetailView(request, id):
     empleado = employee_model.objects.get(id=id)
-    return render(request, "Profile.html", {
-        'empleado': empleado
-    })
+    # Obtener el tipo de contrato del empleado
+    try:
+        contrato = contrato_model.objects.get(empleado=empleado)
+        # obtener las incidencias del empleado
+        incidencias = incidentModel.objects.filter(employee=empleado)
+        return render(request, "Profile.html", {
+            'empleado': empleado,
+            'contrato': contrato,
+            'incidencias': incidencias, # Solo se muestan las incidencias si el empleado tiene contratro
+            'alert': True
+        })
+    except contrato_model.DoesNotExist:
+        return render(request, "Profile.html", {
+            'empleado': empleado,
+            'contrato': 'El empleado no tiene contrato registrado, esto podría afectar en el uso del sistema',
+            'alert': False
+        })
