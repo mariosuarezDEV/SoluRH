@@ -57,6 +57,7 @@ def generar_nomina(request,empleado):
         nomina.salario_total = salario_total
         try:
             nomina.save()
+
             return HttpResponse('La nomina se genero correctamente, el salario total es: ' + str(salario_total) + ' con un salario diario de: ' + str(salario_diario) + ' y un salario subtotal de: ' + str(salario_subtotal) + ' con un aumento de: ' + str(aumento) + ' y una deduccion de: ' + str(deduccion))
         except Exception as e:
             return HttpResponse('Error al guardar la nomina: ' + str(e))

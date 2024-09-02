@@ -1,0 +1,21 @@
+  version: "2.27.0"
+  services:
+    soluRH_database:
+      container_name: soluRH_database
+      image: mysql:8.0-debian
+      ports:
+        - "3103:3306"
+      environment:
+        MYSQL_ROOT_PASSWORD: "edqnYMSDf13."
+        MYSQL_DATABASE: soluRH
+        MYSQL_USER: lmsysadmin
+        MYSQL_PASSWORD: "edqnLMCSf31."
+      volumes:
+        - "disk_soluRH_database:/var/lib/mysql"
+      networks:
+        - red_soluRH
+  volumes:
+    disk_soluRH_database:
+  networks:
+    red_soluRH:
+      driver: bridge
