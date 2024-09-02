@@ -11,5 +11,9 @@ class contrato_model(models.Model):
     salarioDiario = models.DecimalField(max_digits=10, decimal_places=2)
     tipoContrato = models.CharField(max_length=100, choices=[('Determinado', 'Determinado'), ('Indeterminado', 'Indeterminado'), ('Prestacion de servicios','Prestacion de servicios'),('Capacitacion','Capacitacion')])
 
+    class Meta:
+        verbose_name = 'Contrato'
+        verbose_name_plural = 'Contratos'
+
     def __str__(self):
         return f'Contrato de {self.empleado} con fecha de inicio {self.fechaInicio} y fecha de fin {self.fechaFin}'

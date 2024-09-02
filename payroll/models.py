@@ -12,5 +12,9 @@ class modelo_nomina(models.Model):
     salario_subtotal = models.DecimalField(max_digits=10, decimal_places=2)
     salario_total = models.DecimalField(max_digits=10, decimal_places=2)
 
+    class Meta:
+        verbose_name = 'Nomina'
+        verbose_name_plural = 'Nominas'
+
     def __str__(self):
         return f'Nomina de {self.empleado} con fecha de pago {self.fecha_pago} fue de {self.salario_total}'

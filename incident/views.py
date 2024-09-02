@@ -1,6 +1,8 @@
 from django.shortcuts import render, redirect, HttpResponseRedirect
-
+from dal import autocomplete
+from employee.models import employee_model
 from django.contrib.auth.decorators import login_required, user_passes_test
+from .models import typeIncidentModel
 
 # Create your views here.
 
@@ -51,3 +53,27 @@ def marcar_como_pendiente(request,incidencia):
     #Regresar a la pagina anterior
     url_antes = request.META.get('HTTP_REFERER')
     return HttpResponseRedirect(url_antes)
+
+class EmpleadoAutocomplete(autocomplete.Select2QuerySetView):
+    def get_queryset(self):
+        if not self.request.user.is_authenticated:
+            return employee_model.objects.none()
+
+        qs = employee_model.objects.all()
+
+        if self.q:
+            qs = qs.filter(primer_nombre__icontains=self.q) | qs.filter(apellido_paterno__icontains=self.q)
+
+        return qs
+
+class IncidenciaAutocomplete(autocomplete.Select2QuerySetView):
+    def get_queryset(self):
+        if not self.request.user.is_authenticated:
+            return typeIncidentModel.objects.none()
+
+        qs = typeIncidentModel.objects.all()
+
+        if self.q:
+            qs = qs.filter(name__icontains=self.q) | qs.filter(description__icontains=self.q)
+
+        return qs

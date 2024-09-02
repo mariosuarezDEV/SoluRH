@@ -2,9 +2,9 @@
   services:
     soluRH_database:
       container_name: soluRH_database
-      image: mysql:8.0-debian
+      image: mysql:9.0
       ports:
-        - "3103:3306"
+        - "3306:3306"
       environment:
         MYSQL_ROOT_PASSWORD: "edqnYMSDf13."
         MYSQL_DATABASE: soluRH
@@ -13,9 +13,35 @@
       volumes:
         - "disk_soluRH_database:/var/lib/mysql"
       networks:
-        - red_soluRH
+        red_soluRH:
+          ipv4_address: 192.168.2.3
+    soluRH_dns:
+        container_name: soluRH_dns
+        image: ubuntu/bind9
+        ports:
+            - "53:53/udp"
+        volumes:
+            - "disk_soluRH_dns:/etc/bind"
+            - "disk_soluRH_dns_cache:/var/cache/bind"
+            - "disk_soluRH_dns_records:/var/lib/bind"
+            - "disk_soluRH_resolve:/etc/"
+            - "disk_soluRH_default:/etc/default/"
+        networks:
+          red_soluRH:
+            ipv4_address: 192.168.2.4
+        depends_on:
+          - soluRH_database
   volumes:
     disk_soluRH_database:
+    disk_soluRH_dns:
+    disk_soluRH_dns_cache:
+    disk_soluRH_dns_records:
+    disk_soluRH_resolve:
+    disk_soluRH_default:
   networks:
     red_soluRH:
       driver: bridge
+      ipam:
+        config:
+            - subnet: 192.168.2.0/24
+              gateway: 192.168.2.1

@@ -1,4 +1,4 @@
-FROM mysql:8.0-debian
+FROM mysql:9.0
 LABEL authors="luismariocervantessuarez"
 
 # Variables de enterno para la configuracion de la base de datos
@@ -14,4 +14,6 @@ VOLUME /var/lib/mysql
 EXPOSE 3306
 
 #Iniciar de manera segurda el contenedor
-CMD ["mysqld_safe"]
+CMD ["mysqld"]
+
+# docker run -d -p 3306:3306 --name mysql_test_solurh -v disk_db_test_solurh:/var/lib/mysql msuarezdev/mysql_testing
