@@ -13,6 +13,7 @@ from company.models import sucursal_model
 from positon.models import positionModel
 from contract.models import contrato_model
 from incident.models import incidentModel
+from payroll.models import modelo_nomina
 
 
 # Solo tienen permiso los usuarios en el grupo RH
@@ -52,20 +53,15 @@ def RegisterEmployeeView(request):
 @user_passes_test(is_rh, login_url='/')
 def EmployeeDetailView(request, id):
     empleado = employee_model.objects.get(id=id)
-    # Obtener el tipo de contrato del empleado
-    try:
-        contrato = contrato_model.objects.get(empleado=empleado)
-        # obtener las incidencias del empleado
-        incidencias = incidentModel.objects.filter(employee=empleado)
-        return render(request, "Profile.html", {
-            'empleado': empleado,
-            'contrato': contrato,
-            'incidencias': incidencias, # Solo se muestan las incidencias si el empleado tiene contratro
-            'alert': True
-        })
-    except contrato_model.DoesNotExist:
-        return render(request, "Profile.html", {
-            'empleado': empleado,
-            'contrato': 'El empleado no tiene contrato registrado, esto podría afectar en el uso del sistema',
-            'alert': False
-        })
+    contrato = contrato_model.objects.filter(empleado=empleado).first()
+    ultima_nomina = modelo_nomina.objects.filter(empleado=empleado).last()
+    # Obtener la incidencias apartir de la fecha de la ultima nomina y del empleado
+    incidencias = incidentModel.objects.filter(employee=empleado, fecha__gte=ultima_nomina.fecha_pago) if ultima_nomina else None
+    print(ultima_nomina)
+    print(incidencias)
+    return render(request, "Profile.html", {
+        'empleado': empleado,
+        'contrato': contrato,
+        'incidencias': incidencias,  # Solo se muestan las incidencias si el empleado tiene contratro
+        'alert': True
+    })

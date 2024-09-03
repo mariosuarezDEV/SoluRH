@@ -46,7 +46,9 @@ INSTALLED_APPS = [
     "branch.apps.BranchConfig",
     "document.apps.DocumentConfig",
     "positon.apps.PositonConfig",
-    "configurar_estacion.apps.ConfigurarEstacionConfig"
+    "configurar_estacion.apps.ConfigurarEstacionConfig",
+    'dal',
+    'dal_select2',
 ]
 
 MIDDLEWARE = [
@@ -84,10 +86,21 @@ WSGI_APPLICATION = "SuiteFC.wsgi.application"
 # Database
 # https://docs.djangoproject.com/en/4.1/ref/settings/#databases
 
-DATABASES = {
+DATABASES_sqlite = {
     "default": {
         "ENGINE": "django.db.backends.sqlite3",
         "NAME": BASE_DIR / "db.sqlite3",
+    }
+}
+
+DATABASES = {
+    "default": {
+        "ENGINE": "django.db.backends.mysql",
+        "NAME": "soluRH",
+        "USER": "lmsysadmin",
+        "PASSWORD": "edqnLMCSf31.",
+        "HOST": "192.168.0.102",
+        "PORT": "3306",
     }
 }
 
