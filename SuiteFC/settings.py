@@ -99,7 +99,7 @@ DATABASES = {
         "NAME": "soluRH",
         "USER": "lmsysadmin",
         "PASSWORD": "edqnLMCSf31.",
-        "HOST": "192.168.100.11",
+        "HOST": "192.168.0.102",
         "PORT": "3306",
     }
 }

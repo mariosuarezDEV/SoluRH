@@ -1,4 +1,3 @@
-  version: "2.27.0"
   services:
     soluRH_database:
       container_name: soluRH_database
@@ -20,12 +19,13 @@
         image: ubuntu/bind9
         ports:
             - "53:53/udp"
+            - "53:53/tcp"
         volumes:
             - "disk_soluRH_dns:/etc/bind"
             - "disk_soluRH_dns_cache:/var/cache/bind"
             - "disk_soluRH_dns_records:/var/lib/bind"
-            - "disk_soluRH_resolve:/etc/"
             - "disk_soluRH_default:/etc/default/"
+            - "./etc/resolv.conf:/etc/resolv.conf"
         networks:
           red_soluRH:
             ipv4_address: 192.168.2.4
@@ -36,8 +36,8 @@
     disk_soluRH_dns:
     disk_soluRH_dns_cache:
     disk_soluRH_dns_records:
-    disk_soluRH_resolve:
     disk_soluRH_default:
+    paquetes:
   networks:
     red_soluRH:
       driver: bridge
