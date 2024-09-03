@@ -34,6 +34,6 @@ def is_RRHH(user):
 
 @login_required
 def DashboardView(request):
-    return render(request, "dashboard.html",{
+    return render(request, "dashboard.html", {
         "user": request.user
     })

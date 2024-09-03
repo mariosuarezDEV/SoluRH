@@ -31,13 +31,23 @@
             ipv4_address: 192.168.2.4
         depends_on:
           - soluRH_database
+    soluRH_web:
+        container_name: soluRH_web
+        image: solurh:beta
+        ports:
+            - "80:80"
+        networks:
+          red_soluRH:
+            ipv4_address: 192.168.2.5
+        depends_on:
+          - soluRH_database
+          - soluRH_dns
   volumes:
     disk_soluRH_database:
     disk_soluRH_dns:
     disk_soluRH_dns_cache:
     disk_soluRH_dns_records:
     disk_soluRH_default:
-    paquetes:
   networks:
     red_soluRH:
       driver: bridge

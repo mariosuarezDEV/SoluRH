@@ -1,19 +1,31 @@
-FROM mysql:9.0
+FROM python:3.11.9-slim-bullseye
 LABEL authors="luismariocervantessuarez"
 
-# Variables de enterno para la configuracion de la base de datos
-ENV MYSQL_ROOT_PASSWORD="edqnYMSDf13."
-ENV MYSQL_DATABASE="soluRH_test"
-ENV MYSQL_USER="soluRH-test"
-ENV MYSQL_PASSWORD="edqnLMCSf31."
+# Establecer la variable de entorno para evitar la salida interactiva durante la instalación
+ENV DEBIAN_FRONTEND=noninteractive
 
-#Este directorio sera utilizado para almacenar la base de datos y que cuando el contenedor se reinicie no se pierdan los datos
-VOLUME /var/lib/mysql
+# Actualizar los repositorios e instalar las dependencias necesarias para construir paquetes
+RUN apt-get update && apt-get install -y --no-install-recommends \
+    build-essential \
+    python3-dev \
+    libpq-dev \
+    pkg-config \
+    libmariadb-dev \
+    && apt-get clean \
+    && rm -rf /var/lib/apt/lists/*
 
-# Este puerto serà utilizado para la coneccion a la base de datos
-EXPOSE 3306
+# Establecer el directorio de trabajo
+WORKDIR /app
 
-#Iniciar de manera segurda el contenedor
-CMD ["mysqld"]
+# Copiar los archivos necesarios al contenedor
+COPY . /app
 
-# docker run -d -p 3306:3306 --name mysql_test_solurh -v disk_db_test_solurh:/var/lib/mysql msuarezdev/mysql_testing
+# Instalar las dependencias de Python
+RUN pip install --no-cache-dir --upgrade pip \
+    && pip install --no-cache-dir -r paquetes.txt
+
+# Exponer el puerto 80
+EXPOSE 80
+
+# Ejecutar el servicio
+CMD ["daphne", "-b", "0.0.0.0", "-p", "80", "SuiteFC.asgi:application"]

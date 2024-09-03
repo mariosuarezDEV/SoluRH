@@ -66,8 +66,7 @@ ROOT_URLCONF = "SuiteFC.urls"
 TEMPLATES = [
     {
         "BACKEND": "django.template.backends.django.DjangoTemplates",
-        "DIRS": [BASE_DIR / 'templates']
-        ,
+        "DIRS": [],  # Deja esto vacío si quieres que busque en las apps
         "APP_DIRS": True,
         "OPTIONS": {
             "context_processors": [
@@ -99,7 +98,7 @@ DATABASES = {
         "NAME": "soluRH",
         "USER": "lmsysadmin",
         "PASSWORD": "edqnLMCSf31.",
-        "HOST": "192.168.0.102",
+        "HOST": "192.168.100.11",
         "PORT": "3306",
     }
 }
